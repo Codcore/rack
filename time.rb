@@ -14,7 +14,7 @@ class TimeApp
       @body << DateTime.now.strftime(build_time_string)
       [@status, headers, body]
     else
-      [400, headers, ['URL NOT SUPPORTED']]
+      [404, headers, ['URL NOT SUPPORTED']]
     end
   end
 
