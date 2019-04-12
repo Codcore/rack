@@ -4,17 +4,20 @@ require_relative 'time_formatter'
 class TimeApp
 
   def call(env)
-    formatter = TimeFormatter.new
     request = Rack::Request.new(env)
-    if request.get? && request.path == "/time" && request.params["format"]
-      # [200, headers, [request.get?.to_s, request.path.to_s, request.params.to_s ]]
-      formatter.get_formats(request.params["format"])
-      formatter.body << DateTime.now.strftime(formatter.build_time_string)
-      [formatter.status, formatter.headers, formatter.body]
+    response = Rack::Response.new
+    response['Content-Type'] = 'text/html'
+    response.status = 200
+    formatter = TimeFormatter.new
+
+    if request.get? && request.path == '/time' && request.params['format']
+      formatter.body << formatter.format_current_time(request.params['format'])
+      response.write(formatter.body)
+      response.status = 400 if formatter.unknown_format?
     else
-      [404, formatter.headers, ['URL NOT SUPPORTED']]
+      response.status = 404
+      response.write('URL NOT SUPPORTED')
     end
+    response.finish
   end
-
-
 end
