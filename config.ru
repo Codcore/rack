@@ -1,3 +1,3 @@
-require_relative 'time'
+require_relative 'time_app'
 
 run TimeApp.new
