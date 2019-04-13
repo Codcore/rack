@@ -16,7 +16,7 @@ class TimeFormatter
     time_string = ''
     @formats.each do |f|
       unless FORMATS.include? f
-        unknown_format f.to_s
+        add_unknown_format(f.to_s)
         next
       end
       time_string << FORMATS[f]
@@ -29,7 +29,7 @@ class TimeFormatter
     @formats = query.split(',').map(&:to_sym)
   end
 
-  def unknown_format(format)
+  def add_unknown_format(format)
     @unknown_format << format
   end
 
